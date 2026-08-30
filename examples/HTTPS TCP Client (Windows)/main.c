@@ -2,7 +2,7 @@
 // Please Read:
 // This code is using winsock2.h and openssl
 // You must add option to '-lws2_32 -lssl -lcrypto'
-// 
+//
 // Command:
 //   ./run.bat "HTTPS TCP Client (Windows)" "-lws2_32 -lssl -lcrypto"
 // =====
@@ -14,9 +14,10 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib, "ws2_32.lib")
 
-int main(void) {
+int main(void)
+{
     WSADATA wsa;
     SOCKET sock;
     SOCKADDR_IN addr;
@@ -26,15 +27,16 @@ int main(void) {
     //   Success = 0
     //   Failure = SOCKET_ERROR
     int wsa_startup_result = WSAStartup(MAKEWORD(2, 2), &wsa);
-    if (wsa_startup_result != 0) {
+    if (wsa_startup_result != 0)
+    {
         printf("WSAStartup Failed");
         return 0;
     }
 
-
     struct hostent *host;
     host = gethostbyname("sha256.badssl.com"); // Only Domain!!!
-    if (host == NULL) {
+    if (host == NULL)
+    {
         printf("DNS Lookup Failed");
         WSACleanup();
         return 1;
@@ -42,13 +44,14 @@ int main(void) {
 
     // Create Socket
     sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    
+
     addr.sin_family = AF_INET;
     addr.sin_port = htons(443); // Target Port
     memcpy(&addr.sin_addr, host->h_addr_list[0], host->h_length);
 
-    int connect_result = connect(sock, (SOCKADDR*)&addr, sizeof(addr));
-    if (connect_result != 0) {
+    int connect_result = connect(sock, (SOCKADDR *)&addr, sizeof(addr));
+    if (connect_result != 0)
+    {
         printf("Connect Failed");
         closesocket(sock);
         WSACleanup();
@@ -57,7 +60,8 @@ int main(void) {
 
     // ssl start
     SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
-    if (!ctx) {
+    if (!ctx)
+    {
         printf("SSL_CTX_new Error:\n");
         ERR_print_errors_fp(stderr);
         closesocket(sock); // close socket
@@ -65,7 +69,8 @@ int main(void) {
     }
 
     SSL *ssl = SSL_new(ctx);
-    if (!ssl) {
+    if (!ssl)
+    {
         printf("SSL_new Error:\n");
         ERR_print_errors_fp(stderr);
         SSL_CTX_free(ctx);
@@ -77,7 +82,8 @@ int main(void) {
     SSL_set_fd(ssl, (int)sock);
 
     int ssl_conn = SSL_connect(ssl);
-    if (ssl_conn <= 0) {
+    if (ssl_conn <= 0)
+    {
         printf("TLS handshake failed:\n");
         ERR_print_errors_fp(stderr);
         SSL_free(ssl);
@@ -105,9 +111,11 @@ int main(void) {
     //     buffer[received]=0;
     //     printf("Result:\n%s", buffer); // Print result
     // }
-    while (1) {
-        int len = SSL_read(ssl, buffer, sizeof(buffer)-1);
-        if (len <= 0) break;
+    while (1)
+    {
+        int len = SSL_read(ssl, buffer, sizeof(buffer) - 1);
+        if (len <= 0)
+            break;
 
         buffer[len] = 0;
         printf("Result:\n%s", buffer);
@@ -118,6 +126,6 @@ int main(void) {
     SSL_CTX_free(ctx);
 
     closesocket(sock); // Close Socket
-    WSACleanup(); // Cleanip WSA
+    WSACleanup();      // Cleanup WSA
     return 0;
 }

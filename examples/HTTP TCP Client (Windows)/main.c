@@ -2,7 +2,7 @@
 // Please Read:
 // This code is using winsock2.h
 // You must add option to '-lws2_32'
-// 
+//
 // Command:
 //   ./run.bat "HTTP TCP Client (Windows)" "-lws2_32"
 // =====
@@ -12,9 +12,10 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib, "ws2_32.lib")
 
-int main(void) {
+int main(void)
+{
     WSADATA wsa;
     SOCKET sock;
     SOCKADDR_IN addr;
@@ -24,7 +25,8 @@ int main(void) {
     //   Success = 0
     //   Failure = SOCKET_ERROR
     int wsa_startup_result = WSAStartup(MAKEWORD(2, 2), &wsa);
-    if (wsa_startup_result != 0) {
+    if (wsa_startup_result != 0)
+    {
         printf("WSAStartup Failed");
         return 0;
     }
@@ -44,14 +46,15 @@ int main(void) {
 
     // Create Socket
     sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-    
+
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(80); // Target Port
+    addr.sin_port = htons(80);                          // Target Port
     addr.sin_addr.s_addr = inet_addr("104.154.89.105"); // Target IP
     // memcpy(&addr.sin_addr, host->h_addr_list[0], host->h_length);
 
-    int connect_result = connect(sock, (SOCKADDR*)&addr, sizeof(addr));
-    if (connect_result != 0) {
+    int connect_result = connect(sock, (SOCKADDR *)&addr, sizeof(addr));
+    if (connect_result != 0)
+    {
         printf("Connect Failed");
         closesocket(sock);
         WSACleanup();
@@ -71,12 +74,13 @@ int main(void) {
 
     char buffer[4096];
     int received;
-    while((received = recv(sock, buffer, sizeof(buffer) - 1, 0))>0) {
-        buffer[received]=0;
+    while ((received = recv(sock, buffer, sizeof(buffer) - 1, 0)) > 0)
+    {
+        buffer[received] = 0;
         printf("Result:\n%s", buffer); // Print result
     }
 
     closesocket(sock); // Close Socket
-    WSACleanup(); // Cleanip WSA
+    WSACleanup();      // Cleanup WSA
     return 0;
 }
