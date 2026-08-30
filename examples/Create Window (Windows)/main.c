@@ -1,7 +1,7 @@
 // =====
 // Please Read:
-// This code is using winsock2.h
-// You must add option to '-lws2_32'
+// This code is using windows.h
+// You must add option to '-lgdi32'
 // 
 // Command:
 //   ./run.bat "Create Window (Windows)" "-lgdi32"
