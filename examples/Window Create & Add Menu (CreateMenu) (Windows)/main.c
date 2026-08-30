@@ -6,7 +6,6 @@
 // Command:
 //   ./run.bat "Window Create & Add Menu (CreateMenu) (Windows)" "-lgdi32"
 // =====
-#include <stdio.h>
 #include <windows.h>
 
 #define MENU_TEST1 1001
