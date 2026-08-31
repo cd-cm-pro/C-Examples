@@ -26,6 +26,22 @@ Example:
 ./run.bat "Hello World"
 ```
 
+# Scripts
+
+For some examples, you need to download the source code. Enter the command below:
+```sh
+python scripts/get_source.py
+```
+or,
+```sh
+python3 scripts/get_source.py
+```
+
+## Required Python Modules
+```
+requests
+```
+
 # Contribute
 
 If you want to contribute, open a pull request here:

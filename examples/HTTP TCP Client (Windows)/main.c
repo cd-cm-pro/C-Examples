@@ -77,7 +77,7 @@ int main(void)
     while ((received = recv(sock, buffer, sizeof(buffer) - 1, 0)) > 0)
     {
         buffer[received] = 0;
-        printf("Result:\n%s", buffer); // Print result
+        printf("Result:\n%s\n", buffer); // Print result
     }
 
     closesocket(sock); // Close Socket
