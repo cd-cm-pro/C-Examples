@@ -3,7 +3,7 @@
 
 int main(void) {
     char str[20] = "apple,banana,orange";
-    char splitted[3][20] = {};
+    char splitted[3][7] = {};
 
     char item[7] = {};
 
@@ -12,18 +12,13 @@ int main(void) {
     int spl_i = 0;
     char splitting_char = ',';
     while(str[i] != '\0') {
-        char ch = str[i];
-        if (ch == splitting_char) {
-            item_i = 0;
-            strcpy(splitted[spl_i], item);
+        if (str[i] == splitting_char) {
+            splitted[spl_i][item_i] = '\0';
             spl_i++;
+            item_i = 0;
         } else {
-            item[item_i] = ch;
+            splitted[spl_i][item_i] = str[i];
             item_i++;
-        }
-        if (str[i+1] == '\0') {
-            strcpy(splitted[spl_i], item);
-            break;
         }
         i++;
     }
