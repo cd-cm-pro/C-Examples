@@ -28,7 +28,7 @@ int main(void)
     if (wsa_startup_result != 0)
     {
         printf("WSAStartup Failed");
-        return 0;
+        return 1;
     }
 
     // If you need Domain address instead

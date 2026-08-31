@@ -1,18 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 
 int main(void) {
-    int len = 5;
-    int input[len];
-    input[0] = 4;
-    input[1] = 2;
-    input[2] = 3;
-    input[3] = 5;
-    input[4] = 1;
-
+    int input[5] = {4, 2, 3, 5, 1};
+    int len = sizeof(input) / sizeof(input[0]);
     int result[len];
-    for (int i = 0; i < 5; i++) {
-        result[i] = input[i];
-    }
+    memcpy(result, input, sizeof(input));
 
     int temp;
     for (int i = 0; i < len - 1; i++) {

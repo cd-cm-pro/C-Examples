@@ -30,7 +30,7 @@ int main(void)
     if (wsa_startup_result != 0)
     {
         printf("WSAStartup Failed");
-        return 0;
+        return 1;
     }
 
     struct hostent *host;
