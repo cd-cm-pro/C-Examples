@@ -1,6 +1,6 @@
 // =====
 // Please Read:
-// This code is using windows.h
+// This code is using mmsystem.h
 // You must add option to '-lwinmm'
 //
 // Command:

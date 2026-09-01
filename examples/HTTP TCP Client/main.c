@@ -3,10 +3,23 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <netdb.h>
 
 int main(void) {
     int sock;
     struct sockaddr_in addr = {};
+
+    // If you need Domain address instead
+    // of IP address, You should use
+    // gethostbyname (ws2tcpip.h) Function
+    // to do Lookup DNS Server.
+    // ---------------------------------------
+    // struct hostent *host;
+    // host = gethostbyname("http.badssl.com");
+    // if (host == NULL) {
+    //     printf("DNS Lookup Failed");
+    //     return 1;
+    // }
 
     // Create Socket
     sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -19,6 +32,7 @@ int main(void) {
     addr.sin_family = AF_INET;
     addr.sin_port = htons(80);                          // Target Port
     addr.sin_addr.s_addr = inet_addr("104.154.89.105"); // Target IP
+    // memcpy(&addr.sin_addr, host->h_addr_list[0], host->h_length);
     
     int connect_result = connect(sock, (struct sockaddr*)&addr, sizeof(addr));
     if (connect_result != 0) {
