@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 
 int main(void) {
+    // Create Socket
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
         perror("socket failed");
@@ -13,10 +14,12 @@ int main(void) {
     }
     int reuse = 1;
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+    // Configure IPv4 address
     struct sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = htonl(INADDR_ANY); // Server IP
     addr.sin_port = htons(8080); // Server Port
+    // Bind Socket
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) != 0 || listen(sock, 5) != 0) {
         perror("bind/listen failed");
         close(sock);
