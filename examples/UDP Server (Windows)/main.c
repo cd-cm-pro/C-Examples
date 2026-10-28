@@ -1,33 +1,50 @@
 // =====
 // Please Read:
-// This code uses Winsock 2.2.
+// This code is using winsock2.h
+// You must add option to '-lws2_32'
+//
 // Command:
 //   ./run.bat "UDP Server (Windows)" "-lws2_32"
 // =====
+
 #include <stdio.h>
 #include <string.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
+#pragma comment(lib, "ws2_32.lib")
+
 int main(void) {
     WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) return 1;
+
+    // MAKEWORD(2, 2) = Winsock version 2.2
+    // Return Values:
+    //   Success = 0
+    //   Failure = nonzero error code
+    int wsa_startup_result = WSAStartup(MAKEWORD(2, 2), &wsa);
+    if (wsa_startup_result != 0) {
+        printf("WSAStartup Failed: %d\n", wsa_startup_result);
+        return 1;
+    }
+    // Create Socket
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == INVALID_SOCKET) {
         printf("socket failed: %d\n", WSAGetLastError());
-    WSACleanup();
+        WSACleanup();
         return 1;
     }
 
+    // Configure IPv4 address
     struct sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(4567); // Server Port
     addr.sin_addr.s_addr = htonl(INADDR_ANY); // Server IP
 
+    // Bind Socket
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) != 0) {
         printf("bind failed: %d\n", WSAGetLastError());
         closesocket(sock);
-    WSACleanup();
+        WSACleanup();
         return 1;
     }
 
