@@ -6,17 +6,20 @@
 #include <errno.h>
 
 int main(void) {
+    // Create Socket
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == -1) {
         printf("socket failed: %d\n", errno);
         return 1;
     }
 
+    // Configure IPv4 address
     struct sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(4567); // Server Port
     addr.sin_addr.s_addr = htonl(INADDR_ANY); // Server IP
 
+    // Bind Socket
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) != 0) {
         printf("bind failed: %d\n", errno);
         close(sock);
